@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book Index{% endblock %}
+
+{% block body %}
+<h1>Book Index</h1>
+
+<!-- Table to list books -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Is Available</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.id }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.isAvailable ? 'Yes' : 'No' }}</td>
+            <td>
+                {% if 'ROLE_LIBRARIAN' in app.user.roles %}
+            
+                    <a href="{{ path('app_book_show', {'id': book.id}) }}" class="btn btn-outline-info btn-sm">Show</a>
+                    <a href="{{ path('app_book_edit', {'id': book.id}) }}" class="btn btn-outline-warning btn-sm">Edit</a>
+                {% else %}
+                
+                    <a href="{{ path('app_borrow_book', {'bookid': book.id}) }}" class="btn btn-outline-primary btn-sm">Borrow Book</a>
+                {% endif %}
+                <a href=" {{ path('app_return_book', {'bookid': book.id}) }}" class="btn btn-danger btn-sm">Return Book</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5" class="text-center">No records found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if 'ROLE_LIBRARIAN' in app.user.roles %}
+<div class="mt-4">
+    <a href="{{ path('app_book_new') }}" class="btn btn-success">Create New Book</a>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,19 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    {% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+
+<body>
+    <div class="container py-5">
+        <div class="text-center mb-4">
+
+            <h1 class="display-5">Welcome to the Library System</h1>
+        </div>
+    </div>
+{% if app.user %}
+        <div class="mb-3">
+            <a href="{{ path('app_logout') }}" class="btn btn-outline-primary btn-sm">Logout</a>
+             <a class="btn btn-outline-primary btn-sm">view Borrowed Book</a>
+        </div>
+        </div>
+    {% endif %}
+
+    {% block body %}{% endblock %}
+</body>
+
 </html>
