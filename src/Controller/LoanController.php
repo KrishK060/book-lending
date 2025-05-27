@@ -38,7 +38,7 @@ class LoanController extends AbstractController
         BookRepository $bookRepository,
         UserRepository $userRepository,
         LoanRepository $loanRepository,
-        EntityManager $entityManager
+        EntityManagerInterface $entityManager
     ): Response {
 
         $book = $bookRepository->find($bookid);
@@ -62,17 +62,20 @@ class LoanController extends AbstractController
 
 
 
-        return $this->redirectToRoute('app_loan_index');
+        return $this->redirectToRoute('app_borrowed_book');
     }
 
     /**
-     * @Route("/{id}", name="app_loan_show", methods={"GET"})
+     * @Route("/borrowed-book", name="app_borrowed_book", methods={"GET"})
      */
-    public function show(Loan $loan): Response
+    public function show(LoanRepository $loanRepository): Response
     {
-        return $this->render('loan/show.html.twig', [
-            'loan' => $loan,
-        ]);
+       $user = $this->getUser();
+       $records = $loanRepository->findbyUser($user);
+       
+       return $this->render('loan/view_borrowed_book.html.twig', [
+        'loans' => $records,
+    ]);
     }
 
     /**
@@ -96,22 +99,23 @@ class LoanController extends AbstractController
     }
 
     /**
-     * @Route("/return-book/{bookid}", name="app_loan_return", methods={"POST"})
+     * @Route("/return-book/{bookid}", name="app_loan_return", methods={"GET"})
      */
     public function returnbook(int $bookid, BookRepository $bookRepository, LoanRepository $loanRepository,EntityManagerInterface $entityManager): Response
     {
 
         $book = $bookRepository->find($bookid);
-
+       
+        
         if (!$book) {
             $this->addFlash('danger', 'Book not found.');
             return $this->redirectToRoute('app_book_index');
         }
-
+        
 
         $loan = $loanRepository->findOneBy([
             'book' => $book,
-            'user' => $this->getUser(),
+            'users' => $this->getUser(),
             'returnedAt' => null,
         ]);
 
@@ -131,6 +135,6 @@ class LoanController extends AbstractController
 
         $this->addFlash('success', 'Book returned successfully.');
 
-        return $this->redirectToRoute('app_loan_index');
+        return $this->redirectToRoute('app_book_index');
     }
 }

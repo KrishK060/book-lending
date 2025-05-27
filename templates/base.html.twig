@@ -26,7 +26,7 @@
 {% if app.user %}
         <div class="mb-3">
             <a href="{{ path('app_logout') }}" class="btn btn-outline-primary btn-sm">Logout</a>
-             <a class="btn btn-outline-primary btn-sm">view Borrowed Book</a>
+            <a href="{{ path('app_borrowed_book') }}"class="btn btn-outline-primary btn-sm">view Borrowed Book</a>
         </div>
         </div>
     {% endif %}

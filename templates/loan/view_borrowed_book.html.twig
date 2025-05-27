@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Borrowed Book{% endblock %}
+
+{% block body %}
+<a href="{{ path('app_book_index') }}"class="btn btn-outline-primary btn-sm">return to main page</a> 
+<h1>Borrowed Book</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>BookId</th>
+            <th>Book</th>
+            <th>Borrowed Date</th>
+            <th>Due Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for loan in loans %}
+        <tr>
+            <td>{{ loan.book.id}}</td>
+            <td>{{ loan.book.title }}</td>
+            <td>{{ loan.loanedAt|date('Y-m-d H:i:s') }}</td>
+            <td>
+                {% if loan.dueAt is null %}
+                <a>-</a>
+                {% else %}
+                {{ loan.dueAt|days_between}}
+                {% endif %}
+            </td>
+        
+            <td>
+                {% if loan.returnedAt is null %}
+                <a href="{{ path('app_loan_return', {'bookid': loan.book.id}) }}" class="btn btn-danger btn-sm">Return
+                    Book</a>
+                {% else %}
+                <a>-</a>
+                {% endif %}
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -23,7 +23,6 @@
                 <td>{{ loan.dueAt ? loan.dueAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ loan.returnedAt ? loan.returnedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_loan_show', {'id': loan.id}) }}">show</a>
                     <a href="{{ path('app_loan_edit', {'id': loan.id}) }}">edit</a>
                 </td>
             </tr>
