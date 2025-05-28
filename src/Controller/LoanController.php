@@ -8,8 +8,11 @@ use App\Form\LoanType;
 use App\Repository\BookRepository;
 use App\Repository\LoanRepository;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Query;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,6 +78,23 @@ class LoanController extends AbstractController
        
        return $this->render('loan/view_borrowed_book.html.twig', [
         'loans' => $records,
+    ]);
+    }
+
+     /**
+     * @Route("/all-borrowed-book/{page<\d+>}", name="app_borrowed_book_all", methods={"GET"})
+     */
+    public function showAllBorrowedBook(LoanRepository $loanRepository,int $page=1): Response
+    {
+       $queryBuilder = $loanRepository->getAllLoanedUser();
+    //    dd($record);
+        $pagerfanta = new Pagerfanta(
+            new QueryAdapter($queryBuilder)
+        );
+        $pagerfanta->setMaxPerPage(5);
+        $pagerfanta->setCurrentPage($page);
+       return $this->render('loan/view_allBorrowed_book.html.twig', [
+        'loaneduser' => $pagerfanta,
     ]);
     }
 

@@ -50,6 +50,13 @@ class LoanRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function getAllLoanedUser()
+    {
+        return $this->createQueryBuilder('q')
+            ->join('q.users', 'u')
+            ->join('q.book', 'b')
+            ->orderBy('q.id', 'ASC');
+    }
 
     //    /**
     //     * @return Loan[] Returns an array of Loan objects

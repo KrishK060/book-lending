@@ -23,15 +23,20 @@
             <h1 class="display-5">Welcome to the Library System</h1>
         </div>
     </div>
-{% if app.user %}
-        <div class="mb-3">
-            <a href="{{ path('app_logout') }}" class="btn btn-outline-primary btn-sm">Logout</a>
-            <a href="{{ path('app_borrowed_book') }}"class="btn btn-outline-primary btn-sm">view Borrowed Book</a>
-        </div>
-        </div>
+    {% if app.user %}
+    <div class="mb-3">
+        <a href="{{ path('app_logout') }}" class="btn btn-outline-primary btn-sm">Logout</a>
+        {% if 'ROLE_LIBRARIAN' in app.user.roles %}
+        <a href="{{ path('app_borrowed_book_all') }}" class="btn btn-outline-primary btn-sm">view Borrowed Book</a>
+        {% else %}
+        <a href="{{ path('app_borrowed_book') }}" class="btn btn-outline-primary btn-sm">view Borrowed Book</a>
+        {% endif %}
+    </div>
+    </div>
     {% endif %}
 
     {% block body %}{% endblock %}
+ 
 </body>
 
 </html>
