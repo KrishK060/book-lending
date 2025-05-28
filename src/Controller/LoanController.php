@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Entity\Loan;
+use App\Event\LoanReturnedEvent;
 use App\Form\LoanType;
 use App\Repository\BookRepository;
 use App\Repository\LoanRepository;
@@ -14,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -121,7 +123,7 @@ class LoanController extends AbstractController
     /**
      * @Route("/return-book/{bookid}", name="app_loan_return", methods={"GET"})
      */
-    public function returnbook(int $bookid, BookRepository $bookRepository, LoanRepository $loanRepository,EntityManagerInterface $entityManager): Response
+    public function returnbook(int $bookid, BookRepository $bookRepository, LoanRepository $loanRepository,EventDispatcherInterface $eventDispatcher): Response
     {
 
         $book = $bookRepository->find($bookid);
@@ -146,12 +148,12 @@ class LoanController extends AbstractController
         }
 
 
-        $book->setIsAvailable(true);
+        $eventDispatcher->dispatch(new LoanReturnedEvent($loan),LoanReturnedEvent::LOAN_RETURNED);
 
-        $loan->setReturnedAt(new \DateTimeImmutable());
+  
 
-        $entityManager->persist($loan,$book);
-        $entityManager->flush();
+        // $entityManager->persist($loan,$book);
+        // $entityManager->flush();
 
         $this->addFlash('success', 'Book returned successfully.');
 

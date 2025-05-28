@@ -23,10 +23,10 @@
             <td>{{ loan.users.email }}</td>
             <td>{{ loan.loanedAt|date('Y-m-d H:i:s') }}</td>
             <td>
-                {% if loan.dueAt is null %}
-                <a>-</a>
-                {% else %}
+                {% if loan.returnedAt is null %}
                 {{ loan.dueAt|days_between}}
+                {% else %}
+                <a>returned</a>
                 {% endif %}
             </td>
         
