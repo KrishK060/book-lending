@@ -58,6 +58,18 @@ class LoanRepository extends ServiceEntityRepository
             ->orderBy('q.id', 'ASC');
     }
 
+    public function getAllUserHavingMoreThanTwoLoans(){
+        return $this->createQueryBuilder('q')
+            ->select('DISTINCT u')
+            ->join('q.users','u')
+            ->where('DATEDIFF(CURRENT_TIMESTAMP,q.dueAt)>=25')
+            ->where('q.returnedAt is NULL')
+            ->groupBy('u.id')
+            ->having('COUNT(q.id)>=2')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Loan[] Returns an array of Loan objects
     //     */
