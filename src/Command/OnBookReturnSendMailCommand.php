@@ -43,6 +43,7 @@ class OnBookReturnSendMailCommand extends Command
         foreach ($users as $user) {
             $this->eventDispatcher->dispatch(new SendMailEvent($user), SendMailEvent::SEND_EMAIL);
         }
+
         
         $io->success('Warning emails sent successfully.');
 

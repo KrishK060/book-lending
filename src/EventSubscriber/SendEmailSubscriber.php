@@ -34,8 +34,9 @@ class SendEmailSubscriber implements EventSubscriberInterface
     {
         $user = $event->getUser();
 
+
         $email = (new Email())
-            ->from(new Address('alienmailer@example.com', 'The Space Bar'))
+            ->from(new Address('specialagent0601@gmail.com', 'The Space Bar'))
             ->to(new Address($user->getEmail()))
             ->subject('Reminder: Overdue Book Submission')
             ->text('You have to submit the book that you took 25 days ago so please take not of it.');
