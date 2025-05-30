@@ -60,9 +60,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function getAllUserHavingMoreThanTwoLoans()
     {
         return $this->createQueryBuilder('user')
-            ->select('user')
-            ->join('user.loan', 'loan')
-            ->where("DATEDIFF(CURRENT_TIMESTAMP(), loans.dueAt) >= 25 and loan.returnedAt IS NULL")
+            ->join('user.loans', 'loans')
+            ->where("DATEDIFF(CURRENT_TIMESTAMP(), loans.dueAt) >= 25")
+            ->andwhere('loans.returnedAt IS NULL')
             ->groupBy('user')
             ->having('COUNT(loans.id) >= 2')
             ->getQuery()

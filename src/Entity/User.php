@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -36,6 +38,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Loan::class, mappedBy="users")
+     */
+    private $loans;
+
+    public function __construct()
+    {
+        $this->loans = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +133,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
     /**
      * @return Collection<int, Loan>
      */
@@ -129,26 +142,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->loans;
     }
 
-    public function addLoan(Loan $loan): static
+    public function addLoan(Loan $loan): self
     {
         if (!$this->loans->contains($loan)) {
-            $this->loans->add($loan);
-            $loan->setUser($this);
+            $this->loans[] = $loan;
+            $loan->setUsers($this);
         }
 
         return $this;
     }
 
-    public function removeLoan(Loan $loan): static
+    public function removeLoan(Loan $loan): self
     {
         if ($this->loans->removeElement($loan)) {
             // set the owning side to null (unless already changed)
-            if ($loan->getUser() === $this) {
-                $loan->setUser(null);
+            if ($loan->getUsers() === $this) {
+                $loan->setUsers(null);
             }
         }
 
         return $this;
     }
+    
  
 }
