@@ -7,7 +7,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class LoanReturnedEvent extends Event{
     public const LOAN_RETURNED = 'loan.returned';
-    private Loan $loan;
+    private $loan;
 
     public function __construct(Loan $loan){
         $this->loan =$loan;

@@ -1,14 +1,12 @@
 <?php
-namespace App\Event;
+namespace App\Message;
 
 use App\Entity\User;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class SendMailEvent extends Event
+class OnRegistrationSendEmail
 {
-    public const SEND_EMAIL = 'send.email';
-
-    private $user;
+     private $user;
 
     public function __construct(User $user)
     {

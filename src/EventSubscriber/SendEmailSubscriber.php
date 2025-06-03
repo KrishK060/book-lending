@@ -12,9 +12,9 @@ use Symfony\Component\Mime\Email;
 
 class SendEmailSubscriber implements EventSubscriberInterface
 {
-    private EntityManagerInterface $entityManager;
-    private LoggerInterface $logger;
-    private MailerInterface $mailer;
+    private  $entityManager;
+    private  $logger;
+    private  $mailer;
 
     public function __construct(EntityManagerInterface $entityManager, LoggerInterface $logger, MailerInterface $mailer)
     {

@@ -18,8 +18,8 @@ class OnBookReturnSendMailCommand extends Command
     protected static $defaultName = 'onBookReturnSendMail';
     protected static $defaultDescription = 'Send warning email to users with more than two overdue loans';
 
-    private UserRepository $userRepository;
-    private EventDispatcherInterface $eventDispatcher;
+    private  $userRepository;
+    private $eventDispatcher;
 
     public function __construct(UserRepository $userRepository, EventDispatcherInterface $eventDispatcher)
     {
