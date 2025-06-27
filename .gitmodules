@@ -1,0 +1,3 @@
+[submodule "job-portal-php"]
+	path = job-portal-php
+	url = https://github.com/KrishK060/job-portal-php

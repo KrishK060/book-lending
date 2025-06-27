@@ -123,7 +123,7 @@ class LoanController extends AbstractController
     /**
      * @Route("/return-book/{bookid}", name="app_loan_return", methods={"GET"})
      */
-    public function returnbook(int $bookid, BookRepository $bookRepository, LoanRepository $loanRepository,EventDispatcherInterface $eventDispatcher): Response
+    public function returnbook(int $bookid, BookRepository $bookRepository, LoanRepository $loanRepository): Response
     {
 
         $book = $bookRepository->find($bookid);

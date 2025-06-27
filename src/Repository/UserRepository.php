@@ -65,7 +65,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->andwhere('loans.returnedAt IS NULL')
             ->groupBy('user')
             ->having('COUNT(loans.id) >= 2')
-            ->getQuery()
+            ->getQuery() 
             ->getResult();
     }
 
